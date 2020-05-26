@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+    <div class="demo">
+        <div class="logo">
+            <img src="https://www.baidu.com/img/bd_logo1.png?where=super" alt="">
+        </div>
+        <div class="sea-box">
+            <div class="search">
+                <input type="text" v-model="inpVal"
+                    @focus="()=> isShow=true"
+                    @blur="()=>isShow=false"
+                >
+                <span class="iconfont icon">&#xe616;</span>
+                <ul v-if="isShow && result.length">
+                    <li v-for="item in result">{{item}}</li>
+                </ul>
+            </div>
+            <button>百度一下</button>
+        </div>
+    </div>
+    
+    <script src="./vue.js"></script>
+    <script src="./jquery.js"></script>
+    <script>
+        const vm = new Vue({
+            el:".demo",
+            data:{
+                inpVal:"",
+                result:[],
+                isShow:false,
+            },
+            methods:{
+                reqData(res){
+                   this.result = res.s;
+                //    console.log(this.result);
+                }
+            },
+            watch:{
+                inpVal(newVal){
+
+                    $.ajax({
+                        url:"https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su",
+                        data:{
+                            wd:newVal,
+                            cb:'vm.reqData',
+                        },
+                        dataType:"jsonp"
+                    })
+                }
+            }
+        });
+    </script>
+</body>
+</html>
